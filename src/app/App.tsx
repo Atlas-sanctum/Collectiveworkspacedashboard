@@ -8,6 +8,7 @@ import { Metrics } from './components/dashboard/Metrics';
 import { Knowledge } from './components/dashboard/Knowledge';
 import { Economy } from './components/dashboard/Economy';
 import { DashboardProvider } from './context/DashboardContext';
+import { Toaster } from './components/ui/sonner';
 
 export default function App() {
   const [activeTab, setActiveTab] = useState('overview');
@@ -44,6 +45,7 @@ export default function App() {
           </main>
         </div>
       </div>
+      <Toaster position="top-right" expand={false} richColors />
     </DashboardProvider>
   );
 }

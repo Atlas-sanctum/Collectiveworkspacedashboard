@@ -1,5 +1,5 @@
 import React from 'react';
-import { Bell, Search, User, Wallet, LogOut } from 'lucide-react';
+import { Bell, Search, User, Wallet, LogOut, Loader2 } from 'lucide-react';
 import { Button } from '../ui/button';
 import { Avatar, AvatarFallback, AvatarImage } from '../ui/avatar';
 import { Input } from '../ui/input';
@@ -18,7 +18,7 @@ interface HeaderProps {
 }
 
 export function Header({ activeTab }: HeaderProps) {
-  const { isWalletConnected, walletAddress, connectWallet, disconnectWallet } = useDashboard();
+  const { isWalletConnected, walletAddress, connectWallet, disconnectWallet, isWalletConnecting } = useDashboard();
 
   const getTitle = () => {
     switch (activeTab) {
@@ -62,7 +62,7 @@ export function Header({ activeTab }: HeaderProps) {
               className="bg-emerald-600 hover:bg-emerald-700 text-white gap-2"
             >
               <Wallet className="w-4 h-4" />
-              Connect Wallet
+              {isWalletConnecting ? <Loader2 className="w-4 h-4 animate-spin" /> : 'Connect Wallet'}
             </Button>
           ) : (
             <DropdownMenu>

@@ -3,89 +3,122 @@ import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '../ui
 import { Button } from '../ui/button';
 import { ArrowUpRight, ArrowDownRight, Leaf, Users, Activity, Zap } from 'lucide-react';
 import { AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, BarChart, Bar } from 'recharts';
+import { useDashboard } from '../../context/DashboardContext';
+import { AnimatedCounter } from '../shared/AnimatedCounter';
+import { MetricsSkeleton } from '../shared/MetricsSkeleton';
+import { motion } from 'motion/react';
 
 interface OverviewProps {
   setActiveTab: (tab: string) => void;
 }
 
-const healthData = [
-  { name: 'Mon', value: 65 },
-  { name: 'Tue', value: 72 },
-  { name: 'Wed', value: 68 },
-  { name: 'Thu', value: 75 },
-  { name: 'Fri', value: 82 },
-  { name: 'Sat', value: 86 },
-  { name: 'Sun', value: 89 },
-];
-
-const impactData = [
-  { name: 'Jan', carbon: 400, water: 240 },
-  { name: 'Feb', carbon: 300, water: 139 },
-  { name: 'Mar', carbon: 200, water: 980 },
-  { name: 'Apr', carbon: 278, water: 390 },
-  { name: 'May', carbon: 189, water: 480 },
-  { name: 'Jun', carbon: 239, water: 380 },
-];
-
 export function Overview({ setActiveTab }: OverviewProps) {
+  const { healthData, impactData, proposals, assets, isInitialLoading } = useDashboard();
+
+  if (isInitialLoading) {
+    return <MetricsSkeleton />;
+  }
+
+  const totalAssetValue = assets.reduce((sum, a) => sum + (a.price * a.available), 0);
+  const activeProposalsCount = proposals.filter(p => p.status === 'active').length;
+  const ecosystemHealth = Math.round(healthData[healthData.length - 1]?.value || 0);
+
   return (
-    <div className="space-y-6 animate-in fade-in duration-500">
+    <div className="space-y-6">
       {/* KPI Cards */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-        <Card className="bg-slate-900/50 border-slate-800 backdrop-blur-sm">
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium text-slate-400">Total Regenerative Assets</CardTitle>
-            <Leaf className="h-4 w-4 text-emerald-400" />
-          </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold text-slate-100">$2,450,920</div>
-            <p className="text-xs text-emerald-400 flex items-center mt-1">
-              <ArrowUpRight className="h-3 w-3 mr-1" />
-              +20.1% from last month
-            </p>
-          </CardContent>
-        </Card>
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5, delay: 0.1 }}
+        >
+          <Card className="bg-slate-900/50 border-slate-800 backdrop-blur-sm hover:bg-slate-900/70 hover:border-emerald-500/30 transition-all duration-300 cursor-pointer group">
+            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+              <CardTitle className="text-sm font-medium text-slate-400">Total Regenerative Assets</CardTitle>
+              <Leaf className="h-4 w-4 text-emerald-400 group-hover:scale-110 transition-transform duration-300" />
+            </CardHeader>
+            <CardContent>
+              <div className="text-2xl font-bold text-slate-100">
+                <AnimatedCounter value={totalAssetValue} prefix="$" decimals={0} />
+              </div>
+              <p className="text-xs text-emerald-400 flex items-center mt-1">
+                <ArrowUpRight className="h-3 w-3 mr-1" />
+                +20.1% from last month
+              </p>
+            </CardContent>
+          </Card>
+        </motion.div>
 
-        <Card className="bg-slate-900/50 border-slate-800 backdrop-blur-sm">
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium text-slate-400">Active Proposals</CardTitle>
-            <Users className="h-4 w-4 text-indigo-400" />
-          </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold text-slate-100">12</div>
-            <p className="text-xs text-indigo-400 flex items-center mt-1">
-              <span className="text-slate-500 mr-2">3 Voting Ending Soon</span>
-            </p>
-          </CardContent>
-        </Card>
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5, delay: 0.2 }}
+        >
+          <Card className="bg-slate-900/50 border-slate-800 backdrop-blur-sm hover:bg-slate-900/70 hover:border-indigo-500/30 transition-all duration-300 cursor-pointer group">
+            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+              <CardTitle className="text-sm font-medium text-slate-400">Active Proposals</CardTitle>
+              <Users className="h-4 w-4 text-indigo-400 group-hover:scale-110 transition-transform duration-300" />
+            </CardHeader>
+            <CardContent>
+              <div className="text-2xl font-bold text-slate-100">
+                <AnimatedCounter value={activeProposalsCount} />
+              </div>
+              <p className="text-xs text-indigo-400 flex items-center mt-1">
+                <span className="text-slate-500 mr-2">
+                  <AnimatedCounter value={proposals.length} /> Total Proposals
+                </span>
+              </p>
+            </CardContent>
+          </Card>
+        </motion.div>
 
-        <Card className="bg-slate-900/50 border-slate-800 backdrop-blur-sm">
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium text-slate-400">Ecosystem Health</CardTitle>
-            <Activity className="h-4 w-4 text-rose-400" />
-          </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold text-slate-100">92/100</div>
-            <p className="text-xs text-rose-400 flex items-center mt-1">
-              <ArrowDownRight className="h-3 w-3 mr-1" />
-              -1.2% minor fluctuation
-            </p>
-          </CardContent>
-        </Card>
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5, delay: 0.3 }}
+        >
+          <Card className="bg-slate-900/50 border-slate-800 backdrop-blur-sm hover:bg-slate-900/70 hover:border-rose-500/30 transition-all duration-300 cursor-pointer group relative overflow-hidden">
+            <div className="absolute top-0 right-0 w-2 h-2 animate-pulse">
+              <div className="absolute w-full h-full bg-emerald-500 rounded-full"></div>
+              <div className="absolute w-full h-full bg-emerald-500 rounded-full animate-ping"></div>
+            </div>
+            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+              <CardTitle className="text-sm font-medium text-slate-400">Ecosystem Health</CardTitle>
+              <Activity className="h-4 w-4 text-rose-400 group-hover:scale-110 transition-transform duration-300" />
+            </CardHeader>
+            <CardContent>
+              <div className="text-2xl font-bold text-slate-100">
+                <AnimatedCounter value={ecosystemHealth} suffix="/100" />
+              </div>
+              <p className="text-xs text-rose-400 flex items-center mt-1">
+                <ArrowDownRight className="h-3 w-3 mr-1" />
+                -1.2% minor fluctuation
+              </p>
+            </CardContent>
+          </Card>
+        </motion.div>
 
-        <Card className="bg-slate-900/50 border-slate-800 backdrop-blur-sm">
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium text-slate-400">Knowledge Shared</CardTitle>
-            <Zap className="h-4 w-4 text-amber-400" />
-          </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold text-slate-100">843</div>
-            <p className="text-xs text-amber-400 flex items-center mt-1">
-              <ArrowUpRight className="h-3 w-3 mr-1" />
-              +42 new stories this week
-            </p>
-          </CardContent>
-        </Card>
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5, delay: 0.4 }}
+        >
+          <Card className="bg-slate-900/50 border-slate-800 backdrop-blur-sm hover:bg-slate-900/70 hover:border-amber-500/30 transition-all duration-300 cursor-pointer group">
+            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+              <CardTitle className="text-sm font-medium text-slate-400">Knowledge Shared</CardTitle>
+              <Zap className="h-4 w-4 text-amber-400 group-hover:scale-110 transition-transform duration-300" />
+            </CardHeader>
+            <CardContent>
+              <div className="text-2xl font-bold text-slate-100">
+                <AnimatedCounter value={843} />
+              </div>
+              <p className="text-xs text-amber-400 flex items-center mt-1">
+                <ArrowUpRight className="h-3 w-3 mr-1" />
+                +42 new stories this week
+              </p>
+            </CardContent>
+          </Card>
+        </motion.div>
       </div>
 
       {/* Main Content Grid */}
@@ -95,7 +128,7 @@ export function Overview({ setActiveTab }: OverviewProps) {
         <Card className="lg:col-span-4 bg-slate-900/50 border-slate-800 backdrop-blur-sm">
           <CardHeader>
             <CardTitle className="text-slate-100">Regenerative Impact Trend</CardTitle>
-            <CardDescription className="text-slate-400">Real-time ecosystem restoration metrics</CardDescription>
+            <CardDescription className="text-slate-400">Real-time ecosystem restoration metrics (Live Updates)</CardDescription>
           </CardHeader>
           <CardContent>
             <div className="h-[300px] w-full">

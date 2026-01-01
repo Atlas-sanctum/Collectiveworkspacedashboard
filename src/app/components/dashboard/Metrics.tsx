@@ -1,29 +1,15 @@
 import React from 'react';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '../ui/card';
 import { Button } from '../ui/button';
+import { Badge } from '../ui/badge';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '../ui/tabs';
 import { Map, ChartBar, Activity, Wind, Droplets, Leaf } from 'lucide-react';
 import { LineChart, Line, BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Legend } from 'recharts';
-
-const forecastData = [
-  { month: 'Jul', actual: 400, forecast: 410 },
-  { month: 'Aug', actual: 450, forecast: 460 },
-  { month: 'Sep', actual: 480, forecast: 490 },
-  { month: 'Oct', actual: 510, forecast: 500 },
-  { month: 'Nov', actual: 540, forecast: 550 },
-  { month: 'Dec', actual: 590, forecast: 600 },
-  { month: 'Jan', forecast: 640 },
-  { month: 'Feb', forecast: 680 },
-];
-
-const sectorData = [
-  { name: 'Agriculture', score: 85, target: 90 },
-  { name: 'Oceanic', score: 65, target: 80 },
-  { name: 'Healthcare', score: 92, target: 95 },
-  { name: 'Circular', score: 78, target: 85 },
-];
+import { useDashboard } from '../../context/DashboardContext';
 
 export function Metrics() {
+  const { forecastData, sectorData } = useDashboard();
+
   return (
     <div className="space-y-6 animate-in fade-in slide-in-from-bottom-4 duration-500 delay-200">
       
@@ -81,7 +67,7 @@ export function Metrics() {
         <Card className="bg-slate-900/50 border-slate-800 backdrop-blur-sm">
           <CardHeader>
             <CardTitle className="text-slate-100">Regenerative Sector Performance</CardTitle>
-            <CardDescription className="text-slate-400">Current impact score vs Target</CardDescription>
+            <CardDescription className="text-slate-400">Current impact score vs Target (Real-time)</CardDescription>
           </CardHeader>
           <CardContent>
             <div className="h-[300px] w-full">
