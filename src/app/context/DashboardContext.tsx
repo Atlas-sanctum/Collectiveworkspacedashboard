@@ -373,24 +373,35 @@ export function DashboardProvider({ children }: { children: React.ReactNode }) {
 
   return (
     <DashboardContext.Provider value={{
+      // Wallet
       walletAddress,
       isWalletConnected: !!walletAddress,
       connectWallet,
       disconnectWallet,
+      
+      // Values Engine
       values,
       updateValue,
+      
+      // Governance
       proposals,
       voteOnProposal,
+      
+      // Ecological Metrics
       forecastData,
       sectorData,
       healthData,
       impactData,
+      
+      // Regenerative Asset Marketplace
       assets,
       transactions,
       purchaseAsset,
+      
+      // Loading States
       isInitialLoading,
       isWalletConnecting,
-      isTransactionPending
+      isTransactionPending,
     }}>
       {children}
     </DashboardContext.Provider>

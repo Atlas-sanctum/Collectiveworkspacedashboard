@@ -7,6 +7,8 @@ import { Exchange } from './components/dashboard/Exchange';
 import { Metrics } from './components/dashboard/Metrics';
 import { Knowledge } from './components/dashboard/Knowledge';
 import { Economy } from './components/dashboard/Economy';
+import { Workspace } from './components/dashboard/Workspace';
+import { Engineering } from './components/dashboard/Engineering';
 import { DashboardProvider } from './context/DashboardContext';
 import { Toaster } from './components/ui/sonner';
 
@@ -17,6 +19,10 @@ export default function App() {
     switch (activeTab) {
       case 'overview':
         return <Overview setActiveTab={setActiveTab} />;
+      case 'workspace':
+        return <Workspace />;
+      case 'engineering':
+        return <Engineering />;
       case 'governance':
         return <Governance />;
       case 'exchange':

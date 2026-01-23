@@ -132,7 +132,7 @@ export function Overview({ setActiveTab }: OverviewProps) {
           </CardHeader>
           <CardContent>
             <div className="h-[300px] w-full">
-              <ResponsiveContainer width="100%" height="100%">
+              <ResponsiveContainer width="100%" height={300}>
                 <AreaChart data={healthData}>
                   <defs>
                     <linearGradient id="colorValue" x1="0" y1="0" x2="0" y2="1">
@@ -162,7 +162,7 @@ export function Overview({ setActiveTab }: OverviewProps) {
           </CardHeader>
           <CardContent>
              <div className="h-[300px] w-full">
-              <ResponsiveContainer width="100%" height="100%">
+              <ResponsiveContainer width="100%" height={300}>
                 <BarChart data={impactData} layout="vertical">
                   <CartesianGrid strokeDasharray="3 3" stroke="#1e293b" horizontal={true} vertical={false} />
                   <XAxis type="number" stroke="#64748b" fontSize={12} hide />

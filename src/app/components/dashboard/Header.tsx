@@ -59,10 +59,20 @@ export function Header({ activeTab }: HeaderProps) {
           {!isWalletConnected ? (
             <Button 
               onClick={connectWallet}
-              className="bg-emerald-600 hover:bg-emerald-700 text-white gap-2"
+              disabled={isWalletConnecting}
+              className="bg-emerald-600 hover:bg-emerald-700 text-white gap-2 disabled:opacity-50"
             >
-              <Wallet className="w-4 h-4" />
-              {isWalletConnecting ? <Loader2 className="w-4 h-4 animate-spin" /> : 'Connect Wallet'}
+              {isWalletConnecting ? (
+                <>
+                  <Loader2 className="w-4 h-4 animate-spin" />
+                  Connecting...
+                </>
+              ) : (
+                <>
+                  <Wallet className="w-4 h-4" />
+                  Connect Wallet
+                </>
+              )}
             </Button>
           ) : (
             <DropdownMenu>

@@ -8,7 +8,9 @@ import {
   Globe, 
   Settings, 
   LogOut,
-  Hexagon
+  Hexagon,
+  Users,
+  Cpu
 } from 'lucide-react';
 import { cn } from '../../../lib/utils';
 import { Button } from '../ui/button';
@@ -22,6 +24,8 @@ interface SidebarProps {
 export function Sidebar({ activeTab, setActiveTab }: SidebarProps) {
   const navItems = [
     { id: 'overview', label: 'Dashboard', icon: LayoutDashboard },
+    { id: 'workspace', label: 'Workspace', icon: Users },
+    { id: 'engineering', label: 'Engineering', icon: Cpu },
     { id: 'governance', label: 'Ethical Governance', icon: Scale },
     { id: 'exchange', label: 'Regenerative Exchange', icon: RefreshCw },
     { id: 'metrics', label: 'Impact Metrics', icon: ChartBar },
