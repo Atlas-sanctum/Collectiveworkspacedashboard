@@ -10,7 +10,8 @@ import {
   LogOut,
   Hexagon,
   Users,
-  Cpu
+  Cpu,
+  Layers
 } from 'lucide-react';
 import { cn } from '../../../lib/utils';
 import { Button } from '../ui/button';
@@ -26,6 +27,7 @@ export function Sidebar({ activeTab, setActiveTab }: SidebarProps) {
     { id: 'overview', label: 'Dashboard', icon: LayoutDashboard },
     { id: 'workspace', label: 'Workspace', icon: Users },
     { id: 'engineering', label: 'Engineering', icon: Cpu },
+    { id: 'platform', label: 'Platform', icon: Layers },
     { id: 'governance', label: 'Ethical Governance', icon: Scale },
     { id: 'exchange', label: 'Regenerative Exchange', icon: RefreshCw },
     { id: 'metrics', label: 'Impact Metrics', icon: ChartBar },

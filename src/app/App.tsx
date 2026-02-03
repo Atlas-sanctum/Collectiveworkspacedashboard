@@ -9,6 +9,7 @@ import { Knowledge } from './components/dashboard/Knowledge';
 import { Economy } from './components/dashboard/Economy';
 import { Workspace } from './components/dashboard/Workspace';
 import { Engineering } from './components/dashboard/Engineering';
+import { Platform } from './components/dashboard/Platform';
 import { DashboardProvider } from './context/DashboardContext';
 import { Toaster } from './components/ui/sonner';
 
@@ -23,6 +24,8 @@ export default function App() {
         return <Workspace />;
       case 'engineering':
         return <Engineering />;
+      case 'platform':
+        return <Platform />;
       case 'governance':
         return <Governance />;
       case 'exchange':
