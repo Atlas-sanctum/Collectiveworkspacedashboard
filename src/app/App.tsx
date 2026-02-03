@@ -11,50 +11,97 @@ import { Workspace } from './components/dashboard/Workspace';
 import { Engineering } from './components/dashboard/Engineering';
 import { Platform } from './components/dashboard/Platform';
 import { DashboardProvider } from './context/DashboardContext';
+import { WorkspaceProvider } from './context/WorkspaceContext';
+import { ErrorBoundary } from './components/shared/ErrorBoundary';
 import { Toaster } from './components/ui/sonner';
+import { logger } from './services/logger.service';
 
 export default function App() {
   const [activeTab, setActiveTab] = useState('overview');
+
+  // Log app initialization
+  React.useEffect(() => {
+    logger.info('Application initialized', 'App', {
+      version: '1.0.0',
+      environment: process.env.NODE_ENV
+    });
+  }, []);
 
   const renderContent = () => {
     switch (activeTab) {
       case 'overview':
         return <Overview setActiveTab={setActiveTab} />;
       case 'workspace':
-        return <Workspace />;
+        return (
+          <ErrorBoundary>
+            <WorkspaceProvider>
+              <Workspace />
+            </WorkspaceProvider>
+          </ErrorBoundary>
+        );
       case 'engineering':
-        return <Engineering />;
+        return (
+          <ErrorBoundary>
+            <Engineering />
+          </ErrorBoundary>
+        );
       case 'platform':
-        return <Platform />;
+        return (
+          <ErrorBoundary>
+            <Platform />
+          </ErrorBoundary>
+        );
       case 'governance':
-        return <Governance />;
+        return (
+          <ErrorBoundary>
+            <Governance />
+          </ErrorBoundary>
+        );
       case 'exchange':
-        return <Exchange />;
+        return (
+          <ErrorBoundary>
+            <Exchange />
+          </ErrorBoundary>
+        );
       case 'metrics':
-        return <Metrics />;
+        return (
+          <ErrorBoundary>
+            <Metrics />
+          </ErrorBoundary>
+        );
       case 'knowledge':
-        return <Knowledge />;
+        return (
+          <ErrorBoundary>
+            <Knowledge />
+          </ErrorBoundary>
+        );
       case 'economy':
-        return <Economy />;
+        return (
+          <ErrorBoundary>
+            <Economy />
+          </ErrorBoundary>
+        );
       default:
         return <Overview setActiveTab={setActiveTab} />;
     }
   };
 
   return (
-    <DashboardProvider>
-      <div className="flex h-screen w-full bg-slate-950 text-slate-50 overflow-hidden font-sans">
-        <Sidebar activeTab={activeTab} setActiveTab={setActiveTab} />
-        <div className="flex flex-col flex-1 h-full overflow-hidden">
-          <Header activeTab={activeTab} />
-          <main className="flex-1 overflow-y-auto p-6 scrollbar-thin scrollbar-thumb-slate-800 scrollbar-track-transparent">
-            <div className="max-w-7xl mx-auto space-y-8">
-              {renderContent()}
-            </div>
-          </main>
+    <ErrorBoundary>
+      <DashboardProvider>
+        <div className="flex h-screen w-full bg-slate-950 text-slate-50 overflow-hidden font-sans">
+          <Sidebar activeTab={activeTab} setActiveTab={setActiveTab} />
+          <div className="flex flex-col flex-1 h-full overflow-hidden">
+            <Header activeTab={activeTab} />
+            <main className="flex-1 overflow-y-auto p-6 scrollbar-thin scrollbar-thumb-slate-800 scrollbar-track-transparent">
+              <div className="max-w-7xl mx-auto space-y-8">
+                {renderContent()}
+              </div>
+            </main>
+          </div>
         </div>
-      </div>
-      <Toaster position="top-right" expand={false} richColors />
-    </DashboardProvider>
+        <Toaster position="top-right" expand={false} richColors />
+      </DashboardProvider>
+    </ErrorBoundary>
   );
 }
